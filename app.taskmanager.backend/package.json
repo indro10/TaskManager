@@ -1,0 +1,22 @@
+{
+  "name": "app.taskmanager.backend",
+  "version": "1.0.0",
+  "description": "taskmanager backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start-dev": "nodemon index.js"
+  },
+  "author": "indranath",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "generate-unique-id": "^2.0.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
