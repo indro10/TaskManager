@@ -8,6 +8,7 @@ import SignUp from "./components/SignUp";
 import TasKManager from "./components/TasKManager";
 import ErrorContextProvider from "./context/ErrorContextProvider";
 import LandingPage from "./components/LandingPage";
+import axios from "axios";
 
 export default function App() {
   return (

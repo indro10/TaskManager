@@ -7,8 +7,9 @@ const {
   getRefreshTokens,
   setRefreshTokens,
 } = require("../resources/RefreshTokensRes");
+const authVerification = require("../middlewares/auth");
 
-router.post("/", (req, res) => {
+router.post("/", authVerification, (req, res) => {
   let refreshTokens = getRefreshTokens();
   const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
   //take the refresh token from the user

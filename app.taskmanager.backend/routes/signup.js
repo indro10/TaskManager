@@ -12,11 +12,22 @@ const {
   getRefreshTokens,
   setRefreshTokens,
 } = require("../resources/RefreshTokensRes");
+const Joi = require("joi");
 
 //Sign Up endpoint
 router.post("/", (req, res) => {
   const USERS = getUsers();
   const REF_TOKENS = getRefreshTokens();
+
+  const Schema = Joi.object({
+    name: Joi.string(),
+    email: Joi.string().email().required(),
+    password: Joi.string(),
+  });
+  const result = Schema.validate(req.body);
+  if (result.error) {
+    res.status(400).json(result.error);
+  }
   const { email, password, name } = req.body;
   console.log(req.body);
   const user = USERS.find((user) => {

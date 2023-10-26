@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./FormStyle.css";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -12,12 +12,19 @@ export default function SignUp() {
   const navigate = useNavigate();
   const loaderContext = useContext(LoaderContext);
   const navigation = useNavigate();
+
   const Schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required().min(4),
     name: Yup.string().required().min(3),
   });
+  useEffect(() => {
+    if (authContext.values.accessToken) {
+      loaderContext.setLoader("Signing in", false);
 
+      navigate("/home");
+    }
+  }, [authContext.values.accessToken]);
   const handleSignUp = (values) => {
     loaderContext.setLoader("Signing in", true);
 
@@ -29,7 +36,6 @@ export default function SignUp() {
       })
     )
       .then((r) => {
-        loaderContext.setLoader("Signing in", false);
         const accessToken = r.data.accessToken;
         const refreshtoken = r.data.refreshtoken;
         const userData = {
@@ -37,7 +43,7 @@ export default function SignUp() {
           email: r.data.email,
         };
         authContext.setValues(accessToken, refreshtoken, userData);
-        navigate("/home");
+        // navigate("/home");
         console.log(r.data);
       })
       .catch((e) => {
@@ -94,8 +100,8 @@ export default function SignUp() {
                 />
                 <div className="error_text">{errors.password}</div>
               </div>
-              <Button onClick={handleRouteToLogin} label={"Log In"} />
               <Button onClick={handleSubmit} label={"Sign Up"} />
+              <Button onClick={handleRouteToLogin} label={"Log In"} />
             </form>
           );
         }}

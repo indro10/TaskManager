@@ -27,7 +27,7 @@ export default function LoginForm() {
     axios(login(values))
       .then((r) => {
         loaderContext.setLoader("", false);
-        const accessToken = r.data.refreshToken;
+        const accessToken = r.data.accessToken;
         const refreshToken = r.data.refreshToken;
         const userData = { name: r.data.name };
 

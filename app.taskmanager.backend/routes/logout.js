@@ -15,7 +15,7 @@ const {
 } = require("../resources/RefreshTokensRes");
 
 //Logout endpoint
-app.post("/api/logout", (req, res) => {
+app.post("/api/logout", authVerification, (req, res) => {
   const USERS = getUsers();
   const REF_TOKENS = getRefreshTokens();
   const refreshToken = req.body.token;

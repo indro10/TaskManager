@@ -5,12 +5,18 @@ import { Button } from "@mui/material";
 
 export default function TopBar() {
   const authContext = useContext(AuthContext);
+  const handleLogout = () => {
+    authContext.setValues(null, null, null);
+  };
   return (
     <Container>
-      <UserInfo>{`Welcome ${authContext.values.userInfo.name}`}</UserInfo>
+      <UserInfo>{`Welcome ${
+        authContext.values.userInfo ? authContext.values.userInfo.name : ""
+      }`}</UserInfo>
       <Heading>Task Manager</Heading>
       <UserIcon>
         <Button
+          onClick={handleLogout}
           variant="contained"
           sx={{ backgroundColor: "white", color: "rgb(116, 37, 207)" }}
         >

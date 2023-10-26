@@ -4,20 +4,31 @@ import TasKManager from "./TasKManager";
 import TopBar from "./TopBar";
 import { AuthContext } from "../context/AuthContextProvider";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+axios.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default function LandingPage() {
   const authContext = useContext(AuthContext);
   const navigation = useNavigate();
   useEffect(() => {
-    if (
-      authContext.values.accessToken &&
-      authContext.values.refreshToken &&
-      authContext.values.userInfo.name
-    ) {
+    console.log(authContext);
+    if (authContext.values.accessToken) {
     } else {
       navigation("/");
     }
-  }, []);
+  }, [authContext.values]);
 
   return (
     <Container>

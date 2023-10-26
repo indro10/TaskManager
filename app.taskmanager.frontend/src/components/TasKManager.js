@@ -158,28 +158,28 @@ export default function TasKManager() {
   };
   return (
     <Container>
-      {authContext.values.accessToken ? (
-        <>
-          {currentTaskConfig.display && (
-            <ModalContainer>
-              <Task
-                taskInfo={currentTaskConfig.taskInfo}
-                onSubmit={handleTask}
-                onCancel={handleCancelTask}
-              />
-            </ModalContainer>
-          )}
-          <AddItemWrapper>
-            <Button
-              sx={{ backgroundColor: "white", color: "rgb(116, 37, 207)" }}
-              onClick={handleOpenAddTaskContainer}
-              variant="contained"
-              title="Add Item"
-              startIcon={<IoMdAdd />}
-            >
-              Add Item
-            </Button>
-            {/* <Button
+      {/* {authContext.values.accessToken ? ( */}
+      <>
+        {currentTaskConfig.display && (
+          <ModalContainer>
+            <Task
+              taskInfo={currentTaskConfig.taskInfo}
+              onSubmit={handleTask}
+              onCancel={handleCancelTask}
+            />
+          </ModalContainer>
+        )}
+        <AddItemWrapper>
+          <Button
+            sx={{ backgroundColor: "white", color: "rgb(116, 37, 207)" }}
+            onClick={handleOpenAddTaskContainer}
+            variant="contained"
+            title="Add Item"
+            startIcon={<IoMdAdd />}
+          >
+            Add Item
+          </Button>
+          {/* <Button
               onClick={getAllTasks}
               variant="contained"
               title="Add Item"
@@ -187,33 +187,22 @@ export default function TasKManager() {
             >
               Test
             </Button> */}
-          </AddItemWrapper>
-          <TaskListWrapper>
-            {taskList.map((task) => (
-              <TaskListitem
-                key={task.id}
-                taskInfo={task}
-                onTaskModification={handleTaskMod}
-                onTaskView={handleTaskView}
-                onTaskDelete={handleDeleteTask}
-              />
-            ))}
-          </TaskListWrapper>
-          <TaskListWrapper>
-            {taskList.map((task) => (
-              <TaskListitem
-                key={task.id}
-                taskInfo={task}
-                onTaskModification={handleTaskMod}
-                onTaskView={handleTaskView}
-                onTaskDelete={handleDeleteTask}
-              />
-            ))}
-          </TaskListWrapper>
-        </>
-      ) : (
+        </AddItemWrapper>
+        <TaskListWrapper>
+          {taskList.map((task) => (
+            <TaskListitem
+              key={task.id}
+              taskInfo={task}
+              onTaskModification={handleTaskMod}
+              onTaskView={handleTaskView}
+              onTaskDelete={handleDeleteTask}
+            />
+          ))}
+        </TaskListWrapper>
+      </>
+      {/* ) : (
         <Navigate to={"/"} />
-      )}
+      )} */}
     </Container>
   );
 }
