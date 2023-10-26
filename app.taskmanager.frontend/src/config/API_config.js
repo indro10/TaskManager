@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_API;
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const login = (data) => {
   return { url: "/api/login", method: "post", data: data, baseURL: BASE_URL };
