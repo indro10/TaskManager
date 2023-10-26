@@ -14,30 +14,34 @@ const {
 
 //Login endpoint
 router.post("/", (req, res) => {
-  const USERS = getUsers();
-  console.log(USERS);
-  const REF_TOKENS = getRefreshTokens();
-  const { email, password } = req.body;
-  const user = USERS.find((user) => {
-    return user.email === email && user.password === password;
-  });
-  if (user) {
-    //Generate an access token
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
-
-    REF_TOKENS.push(refreshToken);
-    res.json({
-      name: user.name,
-      email: user.email,
-      accessToken,
-      refreshToken,
+  try {
+    const USERS = getUsers();
+    console.log(USERS);
+    const REF_TOKENS = getRefreshTokens();
+    const { email, password } = req.body;
+    const user = USERS.find((user) => {
+      return user.email === email && user.password === password;
     });
-    setRefreshTokens(REF_TOKENS);
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
-  } else {
-    res.status(400).json("Username or password incorrect!");
+    if (user) {
+      //Generate an access token
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
+
+      REF_TOKENS.push(refreshToken);
+      res.json({
+        name: user.name,
+        email: user.email,
+        accessToken,
+        refreshToken,
+      });
+      setRefreshTokens(REF_TOKENS);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+    } else {
+      res.status(400).send("Username or password incorrect!");
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
 });
 

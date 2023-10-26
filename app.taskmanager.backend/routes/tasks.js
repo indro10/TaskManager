@@ -12,7 +12,7 @@ router.get("/", authVerification, (req, res) => {
     const allTask = getTasks();
     res.send(allTask);
   } catch (error) {
-    res.send(error.message);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -33,86 +33,95 @@ router.get("/:id", authVerification, (req, res) => {
 });
 //Add a task;
 router.post("/addTask", authVerification, (req, res) => {
-  //validate the  task;
+  try {
+    const taskSchema = Joi.object({
+      id: Joi.string().required(),
+      title: Joi.string().required(),
+      description: Joi.string().empty(),
+      isCompleted: Joi.boolean().required(),
+      createdBy: Joi.string().required(),
+    });
 
-  const taskSchema = Joi.object({
-    id: Joi.string().required(),
-    title: Joi.string().required(),
-    description: Joi.string().empty(),
-    isCompleted: Joi.boolean().required(),
-    createdBy: Joi.string().required(),
-  });
+    const result = taskSchema.validate(req.body);
+    if (result.error) {
+      res.status(400).send("Bad request");
+    }
 
-  const result = taskSchema.validate(req.body);
-  if (result.error) {
-    res.status(400).send("Bad request");
+    if (!req.body.title) {
+      res.status(400).send("Bad request");
+    }
+    const Task = {
+      id: generateUniqueId(),
+      title: req.body.title,
+      description: req.body.description,
+      isCompleted: req.body.isCompleted,
+      createdBy: req.body.createdBy,
+    };
+    const Tasks = getTasks();
+    const newTasks = [...Tasks, Task];
+    setTasks(newTasks);
+    res.status(201).send(Task);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
-
-  // console.log(req);
-  if (!req.body.title) {
-    res.status(400).send("Bad request");
-  }
-  const Task = {
-    id: generateUniqueId(),
-    title: req.body.title,
-    description: req.body.description,
-    isCompleted: req.body.isCompleted,
-    createdBy: req.body.createdBy,
-  };
-  const Tasks = getTasks();
-  const newTasks = [...Tasks, Task];
-  setTasks(newTasks);
-  res.status(201).send(Task);
 });
 //modify a task
 router.put("/updateTask/:id", authVerification, (req, res) => {
-  const taskSchema = Joi.object({
-    id: Joi.string().required(),
-    title: Joi.string().required(),
-    description: Joi.string().empty(),
-    isCompleted: Joi.boolean().required(),
-    createdBy: Joi.string().required(),
-  });
+  try {
+    const taskSchema = Joi.object({
+      id: Joi.string().required(),
+      title: Joi.string().required(),
+      description: Joi.string().empty(),
+      isCompleted: Joi.boolean().required(),
+      createdBy: Joi.string().required(),
+    });
 
-  const result = taskSchema.validate(req.body);
-  if (result.error) {
-    res.status(400).send("Bad request");
+    const result = taskSchema.validate(req.body);
+    if (result.error) {
+      res.status(400).send("Bad request");
+    }
+
+    const newTask = {
+      id: req.body.id,
+      title: req.body.title,
+      description: req.body.description,
+      isCompleted: req.body.isCompleted,
+      createdBy: req.body.createdBy,
+    };
+
+    const allTasKs = getTasks();
+    const task = allTasKs.find((task) => task.id == req.params.id);
+    if (!task) {
+      res.status(404).send("Bad request");
+    }
+    const index = allTasKs.indexOf(task);
+    allTasKs[index] = newTask;
+    setTasks(allTasKs);
+    res.status(200).send(newTask);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
-
-  const newTask = {
-    id: req.body.id,
-    title: req.body.title,
-    description: req.body.description,
-    isCompleted: req.body.isCompleted,
-    createdBy: req.body.createdBy,
-  };
-
-  const allTasKs = getTasks();
-  const task = allTasKs.find((task) => task.id == req.params.id);
-  if (!task) {
-    res.status(404).send("Bad request");
-  }
-  const index = allTasKs.indexOf(task);
-  allTasKs[index] = newTask;
-  setTasks(allTasKs);
-  res.status(200).send(newTask);
 });
 
 //delete a task
 router.delete("/deleteTask/:id", authVerification, (req, res) => {
   //validate the req
   //find the task or the index that needs to be deleted,
-  const allTask = getTasks();
-  const index = getTasks().findIndex((task) => task.id === req.params.id);
-  if (index == -1) {
-    res.status(404).send("No Task found wiht the id");
-    return;
+  try {
+    const allTask = getTasks();
+    const index = getTasks().findIndex((task) => task.id === req.params.id);
+    if (index == -1) {
+      res.status(404).send("No Task found wiht the id");
+      return;
+    }
+    //delete the task
+    allTask.splice(index, 1);
+    //update the task Array
+    setTasks(allTask);
+    res.json(allTask);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
-  //delete the task
-  allTask.splice(index, 1);
-  //update the task Array
-  setTasks(allTask);
-  res.json(allTask);
 });
 
 module.exports = router;

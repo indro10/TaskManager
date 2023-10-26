@@ -7,10 +7,12 @@ import axios from "axios";
 import { signUp } from "../config/API_config";
 import { AuthContext } from "../context/AuthContextProvider";
 import { LoaderContext } from "../context/LoaderContext";
+import { ErrorContext } from "../context/ErrorContextProvider";
 export default function SignUp() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const loaderContext = useContext(LoaderContext);
+  const errorContext = useContext(ErrorContext);
   const navigation = useNavigate();
 
   const Schema = Yup.object().shape({
@@ -48,6 +50,7 @@ export default function SignUp() {
       })
       .catch((e) => {
         loaderContext.setLoader("Signing in", false);
+        errorContext.setError(e.message, true);
 
         console.log(JSON.stringify(e));
       });

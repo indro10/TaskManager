@@ -16,12 +16,16 @@ const {
 
 //Logout endpoint
 app.post("/api/logout", authVerification, (req, res) => {
-  const USERS = getUsers();
-  const REF_TOKENS = getRefreshTokens();
-  const refreshToken = req.body.token;
-  REF_TOKENS = REF_TOKENS.filter((token) => token !== refreshToken);
-  setRefreshTokens(REF_TOKENS);
-  res.status(200).json("You logged out successfully.");
+  try {
+    const USERS = getUsers();
+    const REF_TOKENS = getRefreshTokens();
+    const refreshToken = req.body.token;
+    REF_TOKENS = REF_TOKENS.filter((token) => token !== refreshToken);
+    setRefreshTokens(REF_TOKENS);
+    res.status(200).send("You logged out successfully.");
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
