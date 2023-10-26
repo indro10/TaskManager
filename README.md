@@ -34,37 +34,37 @@ Follow these instructions to set up the Task Manager App on your local machine.
 
 ### Installation
 
-1. Clone this repository to your local machine:
+1.  Clone this repository to your local machine:
 
-   ```bash
-   git clone https://github.com/indro10/TaskManager.git
-   ```
+    ```bash
+    git clone https://github.com/indro10/TaskManager.git
+    ```
 
-2. Navigate to the project directory:
+2.  Navigate to the project directory:
 
-frontend
+    frontend
 
-```bash
-cd app.taskmanager.frontend
-```
+        ```bash
+        cd app.taskmanager.frontend
+        ```
 
-backend
+    backend
 
-```bash
-cd app.taskmanager.backend
-```
+        ```bash
+        cd app.taskmanager.backend
+        ```
 
-3. Install the required dependencies:
+3.  Install the required dependencies:
 
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-4. Configure the environment variables. Use the `.env` file in the project root and add the necessary variables, such as database connection details, API keys, or any other sensitive information.
+4.  Configure the environment variables. Use the `.env` file in the project root and add the necessary variables, such as database connection details, API keys, or any other sensitive information.
 
-5. Start the development server:
+5.  Start the development server:
 
 frontend
 
