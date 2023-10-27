@@ -66,20 +66,20 @@ Follow these instructions to set up the Task Manager App on your local machine.
 
 5.  Start the development server:
 
-frontend
+    frontend
 
-```bash
-npm start
-# or
-yarn start
-```
+        ```bash
+        npm start
+        # or
+        yarn start
+        ```
 
-backend
+    backend
 
-```bash
-node index.js
+        ```bash
+        node index.js
 
-```
+        ```
 
 The app will be running on `http://localhost:3000`.
 

@@ -16,7 +16,13 @@ export default function LoginForm() {
   const errorContext = useContext(ErrorContext);
   const navigation = useNavigate();
   const Schema = Yup.object().shape({
-    email: Yup.string().email().required(),
+    email: Yup.string()
+      .email()
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "email must be a valid email"
+      )
+      .required(),
     password: Yup.string().required().min(4),
   });
 
