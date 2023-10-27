@@ -4,7 +4,7 @@ const getToken = (user) => {
     { email: user.email, password: user.pass },
     process.env.SECRET_KEY,
     {
-      expiresIn: "5m",
+      expiresIn: "20m",
     }
   );
 };

@@ -37,14 +37,15 @@ router.post("/addTask", authVerification, (req, res) => {
     const taskSchema = Joi.object({
       id: Joi.string().required(),
       title: Joi.string().required(),
-      description: Joi.string().empty(),
+      description: Joi.string().empty().allow(null, ""),
       isCompleted: Joi.boolean().required(),
       createdBy: Joi.string().required(),
     });
 
     const result = taskSchema.validate(req.body);
+    console.log(result);
     if (result.error) {
-      res.status(400).send("Bad request");
+      res.status(400).json({ message: "Bad request", error: result.error });
     }
 
     if (!req.body.title) {
@@ -71,7 +72,7 @@ router.put("/updateTask/:id", authVerification, (req, res) => {
     const taskSchema = Joi.object({
       id: Joi.string().required(),
       title: Joi.string().required(),
-      description: Joi.string().empty(),
+      description: Joi.string().empty().allow(null, ""),
       isCompleted: Joi.boolean().required(),
       createdBy: Joi.string().required(),
     });
