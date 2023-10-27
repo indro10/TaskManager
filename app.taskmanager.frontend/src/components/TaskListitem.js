@@ -15,9 +15,6 @@ export default function TaskListitem({
   onTaskModification,
 }) {
   const [isCompleted, setIsCompleted] = useState(taskInfo.isCompleted);
-  const isEdited = (val1, val2) => {
-    return !val1 === val2;
-  };
   const handleChangeTaskStatus = (event) => {
     const checkedValue = event.target.checked;
     setIsCompleted(checkedValue);
@@ -64,16 +61,11 @@ export default function TaskListitem({
               <Title
                 placeholder="Enter title"
                 onBlur={handleTitleOnBlur}
-                // onChange={(event) => {
-                //   setTitleContent(event.target.value);
-                // }}
                 onChange={handleChange("title")}
-                // readOnly={titleDisabled}
                 value={values.title}
                 maxLength={30}
                 type="text"
               />
-              {/* </Wrapper> */}
               <SaveContainer onClick={handleSubmit}>
                 <IoMdSave color="white" size={25} />
               </SaveContainer>

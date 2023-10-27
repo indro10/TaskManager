@@ -42,7 +42,6 @@ export default function Task({
       }}
       validationSchema={Schema}
       onSubmit={handleSubmitForm}
-      //   onReset={handleCancel}
     >
       {({ handleChange, handleSubmit, values, errors }) => {
         return (

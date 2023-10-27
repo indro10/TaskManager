@@ -29,6 +29,11 @@ export default function TasKManager() {
   const errorContext = useContext(ErrorContext);
   const loaderContext = useContext(LoaderContext);
   const authContext = useContext(AuthContext);
+  const [taskList, setTaskList] = useState([]);
+  const [currentTaskConfig, setCurrentTaskConfig] = useState(
+    getInitialTaskConfig()
+  );
+
   const isAuthorized = () => {
     return authContext.values.accessToken != false;
   };
@@ -49,22 +54,6 @@ export default function TasKManager() {
       });
   };
 
-  const onDeleteTask = (id) => {
-    loaderContext.setLoader("Deleting Task", true);
-    axios(deleteTask(id))
-      .then((r) => {
-        getAllTask();
-      })
-      .catch((e) => {
-        errorContext.setError(e.message, true);
-        loaderContext.setLoader("", false);
-      });
-  };
-  const [taskList, setTaskList] = useState([]);
-  const [currentTaskConfig, setCurrentTaskConfig] = useState(
-    getInitialTaskConfig()
-  );
-
   const handleOpenAddTaskContainer = () => {
     setCurrentTaskConfig({
       ...getInitialTaskConfig(),
@@ -78,19 +67,7 @@ export default function TasKManager() {
     }
   }, []);
 
-  const handleAddNewTasktoList = (newTask) => {
-    setTaskList([...taskList, newTask]);
-    setCurrentTaskConfig({
-      taskInfo: null,
-      display: false,
-      taskAction: null,
-    });
-  };
-
   const handleTask = (values) => {
-    console.log(currentTaskConfig);
-    console.log(values);
-    console.log(authContext.values.userInfo.name);
     if (currentTaskConfig.taskAction === TaskType.add) {
       const task = {
         id: values.id,
@@ -107,8 +84,6 @@ export default function TasKManager() {
           errorContext.setError(e.message, true);
           loaderContext.setLoader("", false);
         });
-      // handleAddNewTasktoList();
-      // return;
     }
     if (currentTaskConfig.taskAction === TaskType.update) {
       axios(updateTask(values))
@@ -158,51 +133,37 @@ export default function TasKManager() {
   };
   return (
     <Container>
-      {/* {authContext.values.accessToken ? ( */}
-      <>
-        {currentTaskConfig.display && (
-          <ModalContainer>
-            <Task
-              taskInfo={currentTaskConfig.taskInfo}
-              onSubmit={handleTask}
-              onCancel={handleCancelTask}
-            />
-          </ModalContainer>
-        )}
-        <AddItemWrapper>
-          <Button
-            sx={{ backgroundColor: "white", color: "rgb(116, 37, 207)" }}
-            onClick={handleOpenAddTaskContainer}
-            variant="contained"
-            title="Add Item"
-            startIcon={<IoMdAdd />}
-          >
-            Add Item
-          </Button>
-          {/* <Button
-              onClick={getAllTasks}
-              variant="contained"
-              title="Add Item"
-              startIcon={<IoMdAdd />}
-            >
-              Test
-            </Button> */}
-        </AddItemWrapper>
-        <TaskListWrapper>
-          {taskList.map((task) => (
-            <TaskListitem
-              key={task.id}
-              taskInfo={task}
-              onTaskModification={handleTaskMod}
-              onTaskView={handleTaskView}
-              onTaskDelete={handleDeleteTask}
-            />
-          ))}
-        </TaskListWrapper>
-      </>
-      {/* ) : (
-        <Navigate to={"/"} />
-      )} */}
+      {currentTaskConfig.display && (
+        <ModalContainer>
+          <Task
+            taskInfo={currentTaskConfig.taskInfo}
+            onSubmit={handleTask}
+            onCancel={handleCancelTask}
+          />
+        </ModalContainer>
+      )}
+      <AddItemWrapper>
+        <Button
+          sx={{ backgroundColor: "white", color: "rgb(116, 37, 207)" }}
+          onClick={handleOpenAddTaskContainer}
+          variant="contained"
+          title="Add Item"
+          startIcon={<IoMdAdd />}
+        >
+          Add Item
+        </Button>
+      </AddItemWrapper>
+      <TaskListWrapper>
+        {taskList.map((task) => (
+          <TaskListitem
+            key={task.id}
+            taskInfo={task}
+            onTaskModification={handleTaskMod}
+            onTaskView={handleTaskView}
+            onTaskDelete={handleDeleteTask}
+          />
+        ))}
+      </TaskListWrapper>
     </Container>
   );
 }
